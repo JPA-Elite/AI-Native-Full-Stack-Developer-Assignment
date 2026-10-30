@@ -1,47 +1,18 @@
-import Link from "next/link";
 import { Files, Users } from "lucide-react";
+import { ViewNavLink } from "@/components/dashboard/view-nav-link";
+import type { View } from "@/components/dashboard/view-navigation";
 import { Avatar } from "@/components/ui/avatar";
 import { Logo } from "@/components/ui/logo";
 import { UserMenu } from "@/components/user-menu";
 import { DEMO_ACCOUNTS } from "@/lib/demo";
 import type { PublicUser } from "@/lib/repo";
-import { cn } from "@/lib/utils";
-
-function NavLink({
-  href,
-  icon,
-  children,
-  active,
-}: {
-  href: string;
-  icon: React.ReactNode;
-  children: React.ReactNode;
-  active: boolean;
-}) {
-  return (
-    <Link
-      href={href}
-      className={cn(
-        "flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-[13px] font-medium transition",
-        active
-          ? "bg-surface text-ink shadow-[0_1px_2px_rgba(27,26,23,0.05)]"
-          : "text-ink-soft hover:bg-surface/60 hover:text-ink",
-      )}
-    >
-      <span className={cn("grid size-4 place-items-center", active ? "text-ink" : "text-ink-faint")}>
-        {icon}
-      </span>
-      {children}
-    </Link>
-  );
-}
 
 export function Sidebar({
   user,
   activeView,
 }: {
   user: PublicUser;
-  activeView: "all" | "owned" | "shared";
+  activeView: View;
 }) {
   return (
     <aside className="fixed inset-y-0 left-0 z-30 hidden w-[252px] flex-col border-r border-line bg-[#f1efe8] px-3.5 py-5 lg:flex">
@@ -50,20 +21,22 @@ export function Sidebar({
       </div>
 
       <nav className="mt-8 space-y-0.5" aria-label="Workspace">
-        <NavLink
-          href="/dashboard"
+        <ViewNavLink
+          view="all"
+          activeView={activeView}
+          matches={["all", "owned"]}
           icon={<Files className="size-4" />}
-          active={activeView !== "shared"}
         >
           Documents
-        </NavLink>
-        <NavLink
-          href="/dashboard?view=shared"
+        </ViewNavLink>
+        <ViewNavLink
+          view="shared"
+          activeView={activeView}
+          matches={["shared"]}
           icon={<Users className="size-4" />}
-          active={activeView === "shared"}
         >
           Shared with me
-        </NavLink>
+        </ViewNavLink>
       </nav>
 
       <div className="mt-9 px-2">

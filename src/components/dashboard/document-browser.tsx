@@ -17,9 +17,16 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useMemo, useState, type MouseEvent } from "react";
 import { AccessBadge } from "@/components/access-badge";
 import { ImportDialog } from "@/components/dashboard/import-dialog";
+import { DocumentListSkeleton } from "@/components/dashboard/document-list-skeleton";
+import {
+  isPlainLeftClick,
+  useViewNavigation,
+  viewHref,
+  type View,
+} from "@/components/dashboard/view-navigation";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, MenuItem } from "@/components/ui/dropdown";
 import { Modal } from "@/components/ui/modal";
@@ -28,7 +35,6 @@ import { apiFetch } from "@/lib/client";
 import type { DocumentSummary, PublicUser } from "@/lib/repo";
 import { cn } from "@/lib/utils";
 
-type View = "all" | "owned" | "shared";
 type DocumentCardData = DocumentSummary & { updatedLabel: string };
 
 const TABS: { key: View; label: string; short: string }[] = [
@@ -48,6 +54,7 @@ export function DocumentBrowser({
 }) {
   const router = useRouter();
   const { toast } = useToast();
+  const { pendingView, goToView } = useViewNavigation();
 
   const [query, setQuery] = useState("");
   const [creating, setCreating] = useState(false);
@@ -80,6 +87,18 @@ export function DocumentBrowser({
     owned: owned.length,
     shared: shared.length,
   };
+
+  // Tabs are real navigations because the view lives in the URL, so the list is
+  // swapped for a skeleton while the server round trip is in flight. Modifier
+  // and middle clicks are left to the browser so "open in new tab" still works.
+  const highlightedView = pendingView ?? activeView;
+
+  function changeView(event: MouseEvent<HTMLAnchorElement>, view: View) {
+    if (!isPlainLeftClick(event)) return;
+    event.preventDefault();
+    if (highlightedView === view) return;
+    goToView(view);
+  }
 
   async function createDocument() {
     setCreating(true);
@@ -202,12 +221,14 @@ export function DocumentBrowser({
           aria-label="Document filters"
         >
           {TABS.map((tab) => {
-            const href = tab.key === "all" ? "/dashboard" : `/dashboard?view=${tab.key}`;
-            const active = activeView === tab.key;
+            const href = viewHref(tab.key);
+            const active = highlightedView === tab.key;
             return (
               <Link
                 key={tab.key}
                 href={href}
+                onClick={(event) => changeView(event, tab.key)}
+                aria-current={activeView === tab.key ? "page" : undefined}
                 className={cn(
                   "flex shrink-0 items-center justify-center gap-1.5 border-b-2 pb-2.5 text-[13px] font-medium transition sm:justify-start",
                   active
@@ -253,7 +274,12 @@ export function DocumentBrowser({
         </div>
       </div>
 
-      {filtered.length === 0 ? (
+      {pendingView ? (
+        <DocumentListSkeleton
+          key={pendingView}
+          rows={Math.min(Math.max(counts[pendingView], 2), 6)}
+        />
+      ) : filtered.length === 0 ? (
         <div className="mt-6 flex flex-col items-center justify-center rounded-2xl border border-dashed border-line-strong bg-surface/50 px-6 py-16 text-center">
           <span className="grid size-12 place-items-center rounded-2xl bg-paper-deep text-ink-faint">
             <FolderOpen className="size-5" />
