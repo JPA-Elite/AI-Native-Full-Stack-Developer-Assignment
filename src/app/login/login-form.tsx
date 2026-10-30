@@ -167,7 +167,6 @@ export function LoginForm() {
               <Avatar name={account.name} color={account.color} size="md" />
               <span className="min-w-0 flex-1">
                 <span className="block text-[13px] font-semibold text-ink">{account.name}</span>
-                <span className="block truncate text-[12px] text-ink-faint">{account.title}</span>
               </span>
               {selected ? (
                 <Check className="size-4 shrink-0 text-accent" aria-hidden />
