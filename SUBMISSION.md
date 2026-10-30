@@ -9,14 +9,14 @@
 ## Reviewer quick path (≈5 minutes)
 
 1. Open the live URL (or run locally — see [README](./README.md)).
-2. Sign in as **Ada Lovelace** (`ada@ajaia.dev` / `demo1234`) via the one-click account card.
+2. Sign in as **Ada Lovelace** (`ada@ajaia.dev` / `demo1234`). The account card fills the email; type the password and press **Sign in**.
 3. Open **Welcome to Ajaia Docs** → edit a line, apply bold/underline, watch **All changes saved** → refresh to confirm persistence.
 4. Click **Share** → invite `linus@ajaia.dev` as **Can view** (if not already) → **Sign out** → sign in as **Linus Torvalds** (`linus@ajaia.dev`) → open the same document: read-only banner, no toolbar, `contenteditable=false`.
 5. Back as Ada, open **Import** and upload a `.md` / `.txt` / `.docx` file (≤4 MB) → it becomes a new editable draft. Open the paperclip to attach a file.
 
 ## Test accounts
 
-All accounts use password **`demo1234`**. The sign-in screen also has one-click buttons.
+All accounts use password **`demo1234`**. The sign-in screen lists the three accounts and fills the email when you pick one; the password is always required.
 
 | Name | Email | Seeded relationship |
 | --- | --- | --- |

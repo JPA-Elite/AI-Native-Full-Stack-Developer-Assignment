@@ -1,25 +1,34 @@
 "use client";
 
-import { AlertCircle, ArrowRight, Loader2 } from "lucide-react";
+import { AlertCircle, ArrowRight, Check, Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Avatar } from "@/components/ui/avatar";
 import { useToast } from "@/components/ui/toast";
 import { apiFetch } from "@/lib/client";
-import { DEMO_ACCOUNTS, DEMO_PASSWORD } from "@/lib/demo";
+import { DEMO_ACCOUNTS } from "@/lib/demo";
 import { cn } from "@/lib/utils";
 
 export function LoginForm() {
   const router = useRouter();
   const { toast } = useToast();
+  const passwordRef = useRef<HTMLInputElement>(null);
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [pending, setPending] = useState<string | null>(null);
+  const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  async function signIn(nextEmail: string, nextPassword: string, source: string) {
-    setPending(source);
+  // The selected card is derived from the email so a typed address highlights
+  // the matching account without a second source of truth.
+  const selectedId =
+    DEMO_ACCOUNTS.find(
+      (account) => account.email.toLowerCase() === email.trim().toLowerCase(),
+    )?.id ?? null;
+
+  async function signIn(nextEmail: string, nextPassword: string) {
+    setPending(true);
     setError(null);
 
     try {
@@ -44,8 +53,15 @@ export function LoginForm() {
       router.refresh();
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : "Unable to sign in.");
-      setPending(null);
+      setPending(false);
     }
+  }
+
+  /** Fills the email only — the password is always typed by the reviewer. */
+  function pickAccount(accountEmail: string) {
+    setEmail(accountEmail);
+    setError(null);
+    passwordRef.current?.focus();
   }
 
   return (
@@ -53,7 +69,8 @@ export function LoginForm() {
       <div className="mb-8">
         <h1 className="text-[26px] font-semibold tracking-tight text-ink">Sign in to your workspace</h1>
         <p className="mt-1.5 text-sm leading-6 text-ink-soft">
-          Use a demo account below, or enter the credentials shared in the README.
+          Pick a seeded account to fill in its email, then enter the demo password documented in the
+          README.
         </p>
       </div>
 
@@ -61,7 +78,7 @@ export function LoginForm() {
         className="space-y-4"
         onSubmit={(event) => {
           event.preventDefault();
-          void signIn(email, password, "form");
+          void signIn(email, password);
         }}
       >
         <div className="space-y-1.5">
@@ -75,28 +92,32 @@ export function LoginForm() {
             autoComplete="email"
             required
             value={email}
-            onChange={(event) => setEmail(event.target.value)}
+            onChange={(event) => {
+              setEmail(event.target.value);
+              setError(null);
+            }}
             placeholder="you@ajaia.dev"
             className="h-10 w-full rounded-lg border border-line-strong/80 bg-surface px-3 text-sm text-ink shadow-[inset_0_1px_1px_rgba(27,26,23,0.03)] transition placeholder:text-ink-faint/70 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/15"
           />
         </div>
 
         <div className="space-y-1.5">
-          <div className="flex items-center justify-between">
-            <label htmlFor="password" className="text-[13px] font-medium text-ink">
-              Password
-            </label>
-            <span className="text-[11px] text-ink-faint">Demo: {DEMO_PASSWORD}</span>
-          </div>
+          <label htmlFor="password" className="text-[13px] font-medium text-ink">
+            Password
+          </label>
           <input
+            ref={passwordRef}
             id="password"
             name="password"
             type="password"
             autoComplete="current-password"
             required
             value={password}
-            onChange={(event) => setPassword(event.target.value)}
-            placeholder="••••••••"
+            onChange={(event) => {
+              setPassword(event.target.value);
+              setError(null);
+            }}
+            placeholder="Enter your password"
             className="h-10 w-full rounded-lg border border-line-strong/80 bg-surface px-3 text-sm text-ink shadow-[inset_0_1px_1px_rgba(27,26,23,0.03)] transition placeholder:text-ink-faint/70 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/15"
           />
         </div>
@@ -111,8 +132,8 @@ export function LoginForm() {
           </div>
         )}
 
-        <Button type="submit" size="lg" className="w-full" disabled={pending !== null}>
-          {pending === "form" ? (
+        <Button type="submit" size="lg" className="w-full" disabled={pending}>
+          {pending ? (
             <Loader2 className="size-4 animate-spin" />
           ) : (
             <>
@@ -125,40 +146,48 @@ export function LoginForm() {
       <div className="my-7 flex items-center gap-3">
         <span className="h-px flex-1 bg-line" />
         <span className="text-[11px] font-medium uppercase tracking-[0.14em] text-ink-faint">
-          or continue as
+          or pick an account
         </span>
         <span className="h-px flex-1 bg-line" />
       </div>
 
       <div className="space-y-2">
-        {DEMO_ACCOUNTS.map((account) => (
-          <button
-            key={account.id}
-            type="button"
-            disabled={pending !== null}
-            onClick={() => void signIn(account.email, DEMO_PASSWORD, account.id)}
-            className={cn(
-              "group flex w-full items-center gap-3 rounded-xl border border-line bg-surface px-3 py-2.5 text-left transition",
-              "hover:border-line-strong hover:bg-paper/60 disabled:opacity-60",
-            )}
-          >
-            <Avatar name={account.name} color={account.color} size="md" />
-            <span className="min-w-0 flex-1">
-              <span className="block text-[13px] font-semibold text-ink">{account.name}</span>
-              <span className="block truncate text-[12px] text-ink-faint">{account.title}</span>
-            </span>
-            {pending === account.id ? (
-              <Loader2 className="size-4 animate-spin text-ink-faint" />
-            ) : (
-              <ArrowRight className="size-4 text-ink-faint transition group-hover:translate-x-0.5 group-hover:text-ink" />
-            )}
-          </button>
-        ))}
+        {DEMO_ACCOUNTS.map((account) => {
+          const selected = selectedId === account.id;
+          return (
+            <button
+              key={account.id}
+              type="button"
+              aria-pressed={selected}
+              disabled={pending}
+              onClick={() => pickAccount(account.email)}
+              className={cn(
+                "group flex w-full items-center gap-3 rounded-xl border px-3 py-2.5 text-left transition disabled:opacity-60",
+                selected
+                  ? "border-accent/45 bg-accent-soft/50 ring-1 ring-accent/20"
+                  : "border-line bg-surface hover:border-line-strong hover:bg-paper/60",
+              )}
+            >
+              <Avatar name={account.name} color={account.color} size="md" />
+              <span className="min-w-0 flex-1">
+                <span className="block text-[13px] font-semibold text-ink">{account.name}</span>
+                <span className="block truncate text-[12px] text-ink-faint">{account.title}</span>
+              </span>
+              {selected ? (
+                <Check className="size-4 shrink-0 text-accent" aria-hidden />
+              ) : (
+                <span className="shrink-0 text-[11px] font-medium text-ink-faint transition group-hover:text-ink">
+                  Use
+                </span>
+              )}
+            </button>
+          );
+        })}
       </div>
 
       <p className="mt-6 text-[12px] leading-5 text-ink-faint">
-        This is a demo workspace. Accounts are seeded, data is shared, and every account uses the
-        same password.
+        Accounts are seeded so the workspace is testable immediately. Picking one only fills in the
+        email — every account still requires its password to sign in.
       </p>
     </div>
   );

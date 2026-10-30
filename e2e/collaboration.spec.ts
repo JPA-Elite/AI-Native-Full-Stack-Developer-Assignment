@@ -13,7 +13,10 @@ let documentId = "";
 
 async function signIn(page: Page, name: string) {
   await page.goto("/login");
+  // Picking an account only fills the email; the password is always typed.
   await page.getByRole("button", { name: new RegExp(name) }).click();
+  await page.getByLabel("Password").fill("demo1234");
+  await page.getByRole("button", { name: "Sign in" }).click();
   await page.waitForURL("**/dashboard");
   // The success toast is rendered by the root layout provider, so it has to
   // survive the redirect from /login to /dashboard.
@@ -21,6 +24,29 @@ async function signIn(page: Page, name: string) {
     page.getByRole("status").filter({ hasText: "Welcome back" }),
   ).toBeVisible();
 }
+
+test("seeded accounts still require a password", async ({ page }) => {
+  await page.goto("/login");
+
+  await page.getByRole("button", { name: /Ada Lovelace/ }).click();
+
+  // The card fills the email but must not authenticate on its own.
+  await expect(page.getByLabel("Email")).toHaveValue("ada@ajaia.dev");
+  await expect(page).toHaveURL(/\/login$/);
+  await expect(page.getByRole("button", { name: "Sign in" })).toBeVisible();
+
+  // Submitting with an empty password is blocked by the form, not the API.
+  await page.getByRole("button", { name: "Sign in" }).click();
+  await expect(page).toHaveURL(/\/login$/);
+
+  await page.getByLabel("Password").fill("wrong-password");
+  await page.getByRole("button", { name: "Sign in" }).click();
+  // Next's route announcer is also an alert, so scope by text.
+  await expect(
+    page.getByRole("alert").filter({ hasText: "Email or password is incorrect" }),
+  ).toBeVisible();
+  await expect(page).toHaveURL(/\/login$/);
+});
 
 test("creates a document, formats it, and survives a reload", async ({ page }) => {
   await signIn(page, "Ada Lovelace");
