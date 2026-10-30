@@ -66,9 +66,8 @@ export default async function LoginPage() {
           </ul>
         </div>
 
-        <div className="flex items-center justify-between text-[11px] text-paper/40">
+        <div className="text-[11px] text-paper/40">
           <span>Built for the Ajaia product exercise</span>
-          <span>Next.js · libSQL · TipTap</span>
         </div>
       </aside>
 
