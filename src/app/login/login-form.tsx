@@ -68,10 +68,6 @@ export function LoginForm() {
     <div className="w-full">
       <div className="mb-8">
         <h1 className="text-[26px] font-semibold tracking-tight text-ink">Sign in to your workspace</h1>
-        <p className="mt-1.5 text-sm leading-6 text-ink-soft">
-          Pick a seeded account to fill in its email, then enter the demo password documented in the
-          README.
-        </p>
       </div>
 
       <form
@@ -184,11 +180,6 @@ export function LoginForm() {
           );
         })}
       </div>
-
-      <p className="mt-6 text-[12px] leading-5 text-ink-faint">
-        Accounts are seeded so the workspace is testable immediately. Picking one only fills in the
-        email — every account still requires its password to sign in.
-      </p>
     </div>
   );
 }

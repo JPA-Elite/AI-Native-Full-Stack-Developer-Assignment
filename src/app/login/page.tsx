@@ -81,10 +81,6 @@ export default async function LoginPage() {
             <LoginForm />
           </div>
         </div>
-
-        <p className="mt-10 text-center text-[11px] text-ink-faint lg:mt-0">
-          A demo workspace — seeded data, no external services required.
-        </p>
       </main>
     </div>
   );
