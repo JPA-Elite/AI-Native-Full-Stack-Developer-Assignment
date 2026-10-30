@@ -83,11 +83,11 @@ Nothing is required locally. See [`.env.example`](./.env.example).
 npm test          # Vitest: permissions, sanitization, import conversion, DB integration (42 tests)
 npm run lint      # ESLint
 npm run typecheck # tsc --noEmit
-npm run test:e2e  # Playwright: create/format/autosave/reload, share→viewer, import
+npm run test:e2e  # Playwright: password-required sign-in, create/format/autosave/reload, share→viewer, import
 ```
 
 - **Unit / integration** (`tests/`): permission matrix, share validation, HTML sanitization against XSS payloads, Markdown/plain-text/`.docx` conversion (with a real `.docx` fixture), repository behavior against a temporary database (ownership, sharing, sessions, attachments, cascade deletes).
-- **End-to-end** (`e2e/`): signs in as two users, creates and formats a document, waits for autosave, reloads to prove persistence, shares it as a viewer in a second browser context, verifies the viewer is read-only, then imports Markdown through the real dialog.
+- **End-to-end** (`e2e/`): asserts a seeded account card does not bypass the password field, then signs in as two users, creates and formats a document, waits for autosave, reloads to prove persistence, shares it as a viewer in a second browser context, verifies the viewer is read-only, signs out with the confirmation toast, and imports Markdown through the real dialog.
 
 Playwright needs a browser once: `npx playwright install chromium`.
 
@@ -121,7 +121,7 @@ The app needs persistent storage. Vercel's filesystem is ephemeral, so productio
    | `DATABASE_URL` | `libsql://ajaia-docs-<org>.turso.io` |
    | `DATABASE_AUTH_TOKEN` | the token from step 1 |
 
-4. **Deploy.** The schema is created and demo data seeded on the first request. Open the deployment, sign in with a demo account, and add the URL to `SUBMISSION.md` and the README header.
+4. **Deploy.** The schema is created and demo data seeded on the first request. Open the deployment and sign in with a demo account. The live URL is recorded in [`SUBMISSION.md`](./SUBMISSION.md) and the README header.
 
 > **Alternative:** any hosted libSQL/SQLite-compatible service works by setting `DATABASE_URL`. A Postgres deployment would require swapping `lib/sql` calls for an ORM — deliberately avoided for the timebox.
 

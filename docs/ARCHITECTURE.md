@@ -23,7 +23,7 @@ Three principles shaped the build:
 | **libSQL (SQLite dialect)** via `@libsql/client` | Zero-setup file database locally; switch `DATABASE_URL` to a Turso URL in production without changing queries. No ORM tax for a 5-table schema. |
 | **Tailwind CSS 4** | Fast, consistent UI without a component library that would blur product decisions. |
 | **Zod + `sanitize-html`** | Validation at the boundary and a strict allowlist on stored rich text. |
-| **Vitest + Playwright** | Fast unit/integration coverage plus one real browser flow for the highest-risk paths. |
+| **Vitest + Playwright** | Fast unit/integration coverage plus real browser flows for the highest-risk paths. |
 
 ### Why not X?
 
@@ -134,5 +134,5 @@ SQL queries are scoped by membership as well (`owner_id = :uid OR EXISTS share`)
 1. `tsc --noEmit` and ESLint on every change.
 2. 42 Vitest tests: permission matrix, Zod contracts, sanitizer payloads, Markdown/text/Word conversion, and repository integration against a temporary database (ownership, sharing, roles, sessions, hashes, attachments, cascade deletes).
 3. A 31-assertion API smoke script exercising the real HTTP surface, including 403/404 boundaries and unauthorized attachment downloads.
-4. Three Playwright flows in a real browser: create → format → autosave → reload, share → viewer is read-only, and Markdown import.
+4. Four Playwright flows in a real browser: password-required sign-in, create → format → autosave → reload, share → viewer is read-only → sign-out toast, and Markdown import.
 5. Manual screenshot review at desktop and mobile widths, which caught the mobile tab overflow, read-only save label, and metadata wrapping fixed in the final build.

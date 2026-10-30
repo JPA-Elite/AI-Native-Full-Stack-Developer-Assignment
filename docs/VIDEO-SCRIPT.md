@@ -12,7 +12,7 @@ The final link belongs in [`../VIDEO_URL.txt`](../VIDEO_URL.txt). Record at 1440
 | 2:45–3:20 | Import + attachments | "Markdown, text, and Word import becomes an editable draft. Attachments are authorized through the parent document, not the file id." |
 | 3:20–3:50 | Architecture note on screen or talk over dashboard | "TipTap for editing, sanitized HTML as the contract, libSQL/Turso because Vercel's filesystem is ephemeral, one permission function used by every route." |
 | 3:50–4:20 | Switch to README limits | "Deliberately not built: real-time, comments, versions, public links. Last-write-wins is the known tradeoff; next is save versioning with conflicts." |
-| 4:20–4:50 | Test output / screenshots | "AI generated scaffolding, tests, and docs. I rejected local SQLite on Vercel, inline permission checks, and the first autosave implementation. Verified with typecheck, lint, 42 unit/integration tests, a 31-assertion API smoke test, three Playwright flows, and desktop/mobile screenshot review." |
+| 4:20–4:50 | Test output / screenshots | "AI generated scaffolding, tests, and docs. I rejected local SQLite on Vercel, inline permission checks, and the first autosave implementation. Verified with typecheck, lint, 42 unit/integration tests, a 31-assertion API smoke test, four Playwright flows, and desktop/mobile screenshot review." |
 | 4:50–5:00 | Close | "Live URL and demo credentials are in SUBMISSION.md." |
 
 ## Recording tips

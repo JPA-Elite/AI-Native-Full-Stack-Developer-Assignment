@@ -40,7 +40,7 @@ I also rejected AI-generated naming and microcopy that felt generic. The editor'
 - **Types and lint:** `npm run typecheck` and `npm run lint` clean (React 19 ref rules included).
 - **42 Vitest tests:** permission matrix, Zod contracts, sanitizer payloads, Markdown/plain-text/`.docx` conversion with a real fixture, and repository integration against a temp database — ownership, role upserts, session hashing, attachment bytes, cascade deletes.
 - **31-assertion API smoke script** against the running server: login, create, save, sanitize, validation, 403/404 boundaries for viewer/editor/stranger, import, attachment upload/download, unauthenticated access, logout.
-- **3 Playwright flows** in Chromium: create → bold → autosave → reload; share → second browser context as the viewer → read-only assertion; Markdown import through the real dialog.
+- **4 Playwright flows** in Chromium: password-required sign-in from an account card, create → bold → autosave → reload, share → second browser context as the viewer → read-only assertion → sign-out toast, and Markdown import through the real dialog.
 - **Screenshot review** at 1440×900 and 390×844. This is where I found and fixed the mobile tab overflow, the redundant "Autosaved" state for viewers, and metadata wrapping in mobile rows.
 - **Adversarial checks:** `javascript:` links, `<script>`/`<iframe>`/`onerror` payloads, path-traversal filenames, malformed `.docx`, oversized files, sharing with yourself, sharing with an unknown email, and deleting another user's document.
 
