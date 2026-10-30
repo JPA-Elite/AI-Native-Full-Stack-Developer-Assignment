@@ -4,7 +4,7 @@ A focused, full-stack collaborative document editor built for the Ajaia AI-Nativ
 
 **Stack:** Next.js 16 (App Router, Route Handlers) · React 19 · TipTap · Tailwind CSS 4 · libSQL / SQLite · Turso (production) · Vercel
 
-> **Live demo:** `<ADD YOUR VERCEL URL HERE>` — see [Deploy](#deploy-to-vercel) and [`SUBMISSION.md`](./SUBMISSION.md).
+> **Live demo:** <https://ai-native-full-stack-developer-assi-three.vercel.app> — see [Deploy](#deploy-to-vercel) and [`SUBMISSION.md`](./SUBMISSION.md).
 >
 > **Demo accounts** (all use password `demo1234`):
 >

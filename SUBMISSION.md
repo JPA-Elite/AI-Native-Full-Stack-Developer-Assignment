@@ -1,6 +1,6 @@
 # Submission — Ajaia Docs
 
-**Live product:** `<ADD YOUR VERCEL URL HERE>`
+**Live product:** <https://ai-native-full-stack-developer-assi-three.vercel.app>
 **Walkthrough video:** see [`VIDEO_URL.txt`](./VIDEO_URL.txt)
 **Source:** this repository
 
@@ -104,12 +104,9 @@ npm run test:e2e    # Playwright (npx playwright install chromium first)
 
 ## Deploy
 
-See the step-by-step Vercel + Turso guide in [`README.md`](./README.md#deploy-to-vercel). Production requires two environment variables: `DATABASE_URL` (libSQL/Turso URL) and `DATABASE_AUTH_TOKEN`. Schema and seed data are created automatically on the first request.
+See the step-by-step Vercel + Turso guide in [`README.md`](./README.md#deploy-to-vercel). The live deployment at <https://ai-native-full-stack-developer-assi-three.vercel.app> runs against Turso; production requires two environment variables, `DATABASE_URL` (libSQL/Turso URL) and `DATABASE_AUTH_TOKEN`, which are already configured in the Vercel project. Schema and seed data are created automatically on the first request.
 
-After deploying, update:
-
-- `<ADD YOUR VERCEL URL HERE>` at the top of this file and in the README.
-- [`VIDEO_URL.txt`](./VIDEO_URL.txt) with the public walkthrough link.
+To update the walkthrough link, edit [`VIDEO_URL.txt`](./VIDEO_URL.txt).
 
 ## Notes for the reviewer
 
