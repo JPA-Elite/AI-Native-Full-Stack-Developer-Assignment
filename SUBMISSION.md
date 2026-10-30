@@ -1,7 +1,6 @@
 # Submission — Ajaia Docs
 
 **Live product:** <https://ai-native-full-stack-developer-assi-three.vercel.app>
-**Walkthrough video:** see [`VIDEO_URL.txt`](./VIDEO_URL.txt)
 **Source:** this repository
 
 ---
@@ -37,9 +36,7 @@ No other credentials, services, or paid dependencies are required.
 | Architecture note | [`docs/ARCHITECTURE.md`](./docs/ARCHITECTURE.md) |
 | AI workflow note | [`docs/AI-WORKFLOW.md`](./docs/AI-WORKFLOW.md) |
 | This submission summary | `SUBMISSION.md` |
-| Walkthrough video URL | [`VIDEO_URL.txt`](./VIDEO_URL.txt) |
 | Screenshots | `docs/screenshots/` (login, dashboard, editor, sharing, attachments, viewer, mobile) |
-| Video outline (for the recording) | [`docs/VIDEO-SCRIPT.md`](./docs/VIDEO-SCRIPT.md) |
 | Automated tests | `tests/` (Vitest), `e2e/` (Playwright) |
 | API smoke test | `scripts/smoke-test.mjs` |
 | Demo `.docx` fixture | `tests/fixtures/import-sample.docx` |
@@ -105,8 +102,6 @@ npm run test:e2e    # Playwright (npx playwright install chromium first)
 ## Deploy
 
 See the step-by-step Vercel + Turso guide in [`README.md`](./README.md#deploy-to-vercel). The live deployment at <https://ai-native-full-stack-developer-assi-three.vercel.app> runs against Turso; production requires two environment variables, `DATABASE_URL` (libSQL/Turso URL) and `DATABASE_AUTH_TOKEN`, which are already configured in the Vercel project. Schema and seed data are created automatically on the first request.
-
-To update the walkthrough link, edit [`VIDEO_URL.txt`](./VIDEO_URL.txt).
 
 ## Notes for the reviewer
 
