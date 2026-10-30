@@ -1,6 +1,12 @@
 import type { Client } from "@libsql/client";
 import { hashPassword } from "./crypto";
-import { DEMO_ACCOUNTS, DEMO_PASSWORD } from "./demo";
+import { DEMO_ACCOUNTS } from "./demo";
+
+/**
+ * Demo-only credential for the seeded accounts. Kept out of `demo.ts` because
+ * that module is imported by client components.
+ */
+const DEMO_PASSWORD = "demo1234";
 
 const WELCOME = `
 <p>This is a shared space for the team to think, write, and decide together. It is intentionally small: a fast editor, a clear sharing model, and just enough file handling to keep real work moving.</p>

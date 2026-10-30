@@ -1,9 +1,11 @@
 /**
- * Seeded workspace. Shared by the database seed and the sign-in screen so the
- * demo credentials reviewers see are the ones that actually exist.
+ * Seeded workspace members, shared by the database seed and the sign-in screen
+ * so the accounts reviewers see are the ones that actually exist.
+ *
+ * The demo password deliberately lives in `seed.ts` instead: this module is
+ * imported by client components, and a credential has no business being
+ * shipped in a browser bundle.
  */
-export const DEMO_PASSWORD = "demo1234";
-
 export const DEMO_ACCOUNTS = [
   {
     id: "usr_ada",
