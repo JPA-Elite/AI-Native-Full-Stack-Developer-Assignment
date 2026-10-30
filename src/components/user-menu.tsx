@@ -35,6 +35,13 @@ export function UserMenu({ user, variant = "sidebar" }: { user: PublicUser; vari
     setPending(true);
     try {
       await apiFetch("/api/auth/logout", { method: "POST" });
+      // Fired before navigating: the toast provider is in the root layout, so
+      // it renders on the sign-in screen after the redirect completes.
+      toast({
+        title: "Signed out",
+        description: "Your session has ended.",
+        tone: "success",
+      });
       router.replace("/login");
       router.refresh();
     } catch (error) {

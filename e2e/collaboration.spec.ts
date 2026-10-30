@@ -15,6 +15,11 @@ async function signIn(page: Page, name: string) {
   await page.goto("/login");
   await page.getByRole("button", { name: new RegExp(name) }).click();
   await page.waitForURL("**/dashboard");
+  // The success toast is rendered by the root layout provider, so it has to
+  // survive the redirect from /login to /dashboard.
+  await expect(
+    page.getByRole("status").filter({ hasText: "Welcome back" }),
+  ).toBeVisible();
 }
 
 test("creates a document, formats it, and survives a reload", async ({ page }) => {
@@ -36,7 +41,11 @@ test("creates a document, formats it, and survives a reload", async ({ page }) =
   await page.getByRole("button", { name: "Bold (⌘B)" }).click();
 
   await expect(editor.locator("strong")).toHaveText("Bold line");
-  await expect(page.getByRole("status")).toContainText("All changes saved", { timeout: 15_000 });
+  // Scoped by accessible name: the sign-in toast is also a live region and may
+  // still be on screen when the editor mounts.
+  await expect(
+    page.getByRole("status", { name: "All changes saved" }),
+  ).toBeVisible({ timeout: 15_000 });
 
   await page.reload();
   await editor.waitFor();
@@ -78,6 +87,13 @@ test("shares the document as a viewer and the viewer cannot edit", async ({ page
   await gracePage.goto("/dashboard");
   const row = gracePage.getByRole("listitem").filter({ hasText: documentTitle });
   await expect(row.getByText("Can view")).toBeVisible();
+
+  // Signing out also confirms with a toast, which must survive the redirect
+  // back to the sign-in screen.
+  await gracePage.getByRole("button", { name: "Account menu" }).click();
+  await gracePage.getByRole("menuitem", { name: "Sign out" }).click();
+  await gracePage.waitForURL("**/login");
+  await expect(gracePage.getByRole("status").filter({ hasText: "Signed out" })).toBeVisible();
 
   await graceContext.close();
 });

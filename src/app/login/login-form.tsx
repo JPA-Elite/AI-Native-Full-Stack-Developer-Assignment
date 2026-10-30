@@ -5,12 +5,14 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Avatar } from "@/components/ui/avatar";
+import { useToast } from "@/components/ui/toast";
 import { apiFetch } from "@/lib/client";
 import { DEMO_ACCOUNTS, DEMO_PASSWORD } from "@/lib/demo";
 import { cn } from "@/lib/utils";
 
 export function LoginForm() {
   const router = useRouter();
+  const { toast } = useToast();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [pending, setPending] = useState<string | null>(null);
@@ -21,11 +23,23 @@ export function LoginForm() {
     setError(null);
 
     try {
-      await apiFetch("/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: nextEmail, password: nextPassword }),
+      const { user } = await apiFetch<{ user: { name: string; email: string } }>(
+        "/api/auth/login",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: nextEmail, password: nextPassword }),
+        },
+      );
+
+      // The provider lives in the root layout, so the toast survives the
+      // client-side navigation to the dashboard.
+      toast({
+        title: `Welcome back, ${user.name.split(" ")[0]}`,
+        description: `Signed in as ${user.email}.`,
+        tone: "success",
       });
+
       router.replace("/dashboard");
       router.refresh();
     } catch (cause) {
