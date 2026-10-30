@@ -1,0 +1,25 @@
+PASTE PUBLIC WALKTHROUGH VIDEO URL HERE
+
+--------------------------------------------------------------------------
+Recording checklist (replace the line above with the final unlisted
+YouTube / Loom / Vimeo / Drive link before submitting):
+
+Length: 3-5 minutes.
+
+Suggested flow:
+  1. 0:00-0:30  What the product is and who it is for (one sentence).
+  2. 0:30-1:30  Sign in as Ada -> dashboard (owned vs shared) -> create a
+                document -> bold/underline/headings/lists -> point out the
+                save indicator -> refresh to prove persistence.
+  3. 1:30-2:20  Share dialog -> invite Linus as viewer -> sign in as Linus
+                -> show read-only banner and missing toolbar.
+  4. 2:20-3:00  Import a .md/.docx file -> new draft; open attachments and
+                upload/download a file.
+  5. 3:00-3:40  Key decisions: TipTap + sanitized HTML, libSQL/Turso
+                instead of ephemeral SQLite on Vercel, autosave debounce,
+                invite-only sharing.
+  6. 3:40-4:20  What was deprioritized (real-time, comments, versions,
+                public links) and what comes next.
+  7. 4:20-4:50  AI workflow: what it generated, what was rejected/changed,
+                how it was verified (tests, screenshots).
+--------------------------------------------------------------------------

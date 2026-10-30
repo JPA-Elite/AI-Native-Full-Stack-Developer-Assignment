@@ -39,3 +39,13 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# local database + dev artifacts
+/.data/
+/.dev.log
+/test-results/
+/playwright-report/
+/blob-report/
+
+# keep the example env file
+!.env.example
